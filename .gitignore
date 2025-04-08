@@ -11,6 +11,10 @@
 # production
 /build
 
+#개인정보
+/src/firebase.js
+
+
 # misc
 .DS_Store
 .env.local
