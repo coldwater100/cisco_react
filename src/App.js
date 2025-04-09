@@ -1,21 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
-import { Hello } from './component/Hello';
-import MyNavbar from './component/MyNavbar';
-import Register from './component/Register';
-
-
+import React from 'react';
+import OtpQrPage from './component/OtpQrPage';
 
 function App() {
   return (
-    <div className="App">
-      <MyNavbar></MyNavbar>
-      <Hello></Hello>
-      <Register></Register>
-
+    <div>
+      {/* 테스트할 MAC 주소 입력 */}
+      <OtpQrPage mac="AA:BB:CC:DD:EE:FF" />
     </div>
   );
 }
 
 export default App;
-
