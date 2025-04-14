@@ -8,6 +8,7 @@ import {
 } from 'firebase/firestore';
 import { QRCodeCanvas } from 'qrcode.react';
 import { db } from '../firebase/firebase.js';
+import { Container } from "react-bootstrap"
 
 function OtpQrPage() {
   const [mac, setMac] = useState('');
@@ -44,37 +45,40 @@ function OtpQrPage() {
   };
 
   return (
-    <div style={{ textAlign: 'center', padding: '2rem' }}>
-      <h2>🔐 OTP QR 코드</h2>
+    <Container fluid className='body-area'>
+      <div style={{ textAlign: 'center', padding: '2rem' }}>
+        <h2>🔐 OTP QR 코드</h2>
 
-      <button
-        onClick={fetchLatestOtp}
-        style={{
-          padding: '0.5rem 1rem',
-          fontSize: '1rem',
-          marginBottom: '1rem',
-        }}
-      >
-        🔄 가장 최근 등록된 MAC 불러오기
-      </button>
+        <button
+          onClick={fetchLatestOtp}
+          style={{
+            padding: '0.5rem 1rem',
+            fontSize: '1rem',
+            marginBottom: '1rem',
+          }}
+        >
+          🔄 가장 최근 등록된 MAC 불러오기
+        </button>
 
-      {loading && <p>⏳ 불러오는 중...</p>}
+        {loading && <p>⏳ 불러오는 중...</p>}
 
-      {mac && otp && (
-        <div style={{ marginTop: '2rem' }}>
-          <p><strong>MAC:</strong> {mac}</p>
-          <p><strong>OTP:</strong> {otp}</p>
-          <p>
-            <strong>등록 시간:</strong>{' '}
-            {timestamp?.toLocaleString('ko-KR', {
-              timeZone: 'Asia/Seoul',
-              hour12: false,
-            })}
-          </p>
-          <QRCodeCanvas value={otp} size={200} />
-        </div>
-      )}
-    </div>
+        {mac && otp && (
+          <div style={{ marginTop: '2rem' }}>
+            <p><strong>MAC:</strong> {mac}</p>
+            <p><strong>OTP:</strong> {otp}</p>
+            <p>
+              <strong>등록 시간:</strong>{' '}
+              {timestamp?.toLocaleString('ko-KR', {
+                timeZone: 'Asia/Seoul',
+                hour12: false,
+              })}
+            </p>
+            <QRCodeCanvas value={otp} size={200} />
+          </div>
+        )}
+      </div>
+
+    </Container>
   );
 }
 
