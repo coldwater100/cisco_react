@@ -18,7 +18,7 @@ function App() {
           <MyNavbar />
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/test" element={<OtpQrPage/>} />
+              <Route path="/view_qr" element={<OtpQrPage/>} />
               <Route path="/user/register" element={<RegisterUserForm/>} />
               <Route path="/login" element={<LoginForm/>} />
             </Routes>

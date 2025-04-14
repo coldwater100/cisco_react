@@ -17,13 +17,13 @@ export const LoginForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage(null);
-
+    
         if (!localUsername.trim() || !password.trim()) {
             setMessage("모든 필드를 입력하세요.");
             setVariant("danger");
             return;
         }
-
+    
         try {
             // Firestore에서 해당 사용자 정보 가져오기
             const q = query(
@@ -31,18 +31,23 @@ export const LoginForm = () => {
                 where("username", "==", localUsername)
             );
             const querySnapshot = await getDocs(q);
-
+    
             if (!querySnapshot.empty) {
                 // 사용자가 존재할 경우
                 const userDoc = querySnapshot.docs[0].data();
                 const storedHashedPassword = userDoc.hashedPassword;
-
+    
                 // bcrypt로 비밀번호 비교
                 const isPasswordCorrect = await bcrypt.compare(password, storedHashedPassword);
-
+    
                 if (isPasswordCorrect) {
                     setMessage("로그인 성공!");
                     setVariant("success");
+    
+                    // 로그인 상태 sessionStorage에 저장
+                    sessionStorage.setItem("isLoggedIn", "true");
+                    sessionStorage.setItem("username", localUsername);
+    
                     setIsLoggedIn(true);
                     setUsername(localUsername); // 전역 상태 업데이트
                     setLocalUsername("");
@@ -61,9 +66,11 @@ export const LoginForm = () => {
             setVariant("danger");
         }
     };
+    
+    
 
     return (
-        <Container fluid className="body-area bg-success">
+        <Container fluid className="body-area">
             <Container style={{ maxWidth: "600px" }}>
                 <Container className="fs-2 mb-2">로그인</Container>
                 <Container className="fs-4 mb-4">

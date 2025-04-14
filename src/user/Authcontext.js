@@ -3,32 +3,34 @@ import { createContext, useContext, useState, useEffect } from "react";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState("");
-
-  const checkLoginStatus = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/auth/status", {
-        credentials: "include",
-      });
-      if (!response.ok) throw new Error("인증 정보 없음");
-
-      const data = await response.json();
-      setIsLoggedIn(true);
-      setUsername(data.username);
-    } catch (error) {
-      console.error("로그인 상태 확인 실패:", error);
-      setIsLoggedIn(false);
-      setUsername("");
-    }
-  };
+  const [isLoggedIn, setIsLoggedInState] = useState(false);
+  const [username, setUsernameState] = useState("");
+  const [isAuthLoaded, setIsAuthLoaded] = useState(false); // ✅ 추가
 
   useEffect(() => {
-    checkLoginStatus();
+    const storedLogin = sessionStorage.getItem("isLoggedIn");
+    const storedUsername = sessionStorage.getItem("username");
+
+    if (storedLogin === "true" && storedUsername) {
+      setIsLoggedInState(true);
+      setUsernameState(storedUsername);
+    }
+
+    setIsAuthLoaded(true); // ✅ 로딩 완료
   }, []);
 
+  const setIsLoggedIn = (value) => {
+    setIsLoggedInState(value);
+    sessionStorage.setItem("isLoggedIn", value ? "true" : "false");
+  };
+
+  const setUsername = (value) => {
+    setUsernameState(value);
+    sessionStorage.setItem("username", value);
+  };
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn, username, setIsLoggedIn, setUsername }}>
+    <AuthContext.Provider value={{ isLoggedIn, username, setIsLoggedIn, setUsername, isAuthLoaded }}>
       {children}
     </AuthContext.Provider>
   );

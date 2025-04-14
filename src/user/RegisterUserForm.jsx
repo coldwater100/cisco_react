@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Alert, Container } from "react-bootstrap";
 import { db } from "../firebase/firebase";
 import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore";
 import bcrypt from "bcryptjs";
+
+import { useAuth } from "./Authcontext";
+import { useNavigate } from "react-router-dom";
+
 
 export const RegisterUserForm = () => {
     const [username, setUsername] = useState("");
@@ -11,6 +15,16 @@ export const RegisterUserForm = () => {
     const [message, setMessage] = useState(null);
     const [variant, setVariant] = useState("success");
 
+    const { isLoggedIn, isAuthLoaded } = useAuth();
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        if (isAuthLoaded && isLoggedIn === false) {
+            navigate("/");
+        }
+    }, [isLoggedIn, isAuthLoaded, navigate]);
+    
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage(null);

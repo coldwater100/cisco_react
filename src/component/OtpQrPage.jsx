@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   collection,
   getDocs,
@@ -10,11 +10,23 @@ import { QRCodeCanvas } from 'qrcode.react';
 import { db } from '../firebase/firebase.js';
 import { Container } from "react-bootstrap"
 
+import { useAuth } from '../user/Authcontext.js';
+import { useNavigate } from 'react-router-dom';
+
 function OtpQrPage() {
   const [mac, setMac] = useState('');
   const [otp, setOtp] = useState('');
   const [timestamp, setTimestamp] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const { isLoggedIn, isAuthLoaded } = useAuth();
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+      if (isAuthLoaded && isLoggedIn === false) {
+          navigate("/");
+      }
+  }, [isLoggedIn, isAuthLoaded, navigate]);
 
   const fetchLatestOtp = async () => {
     setLoading(true);
