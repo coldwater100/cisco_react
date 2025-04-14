@@ -18,12 +18,11 @@ export const MyNavbar = () => {
   return (
     <Navbar expand="lg" className="navi-area">
       <Container>
-        <Navbar.Brand href="/">Bluefence</Navbar.Brand>
+        <Navbar.Brand href="/" className='text-primary'>Bluefence</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/user/register">Test</Nav.Link>
+            <Nav.Link href="/info">Information</Nav.Link>
             { isLoggedIn && (
               <NavDropdown title="관리자메뉴" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/user/register">Register User</NavDropdown.Item>
